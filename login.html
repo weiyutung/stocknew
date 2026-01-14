@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <title>登入</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .login-container {
+        background-color: white;
+        padding: 30px 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-sizing: border-box;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .message {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <h2>登入</h2>
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="密碼" required />
+      <button onclick="login()">登入</button>
+      <div class="message" id="message"></div>
+      <p style="text-align: center; margin-top: 10px">
+        <a href="register.html">還沒註冊？</a>｜
+        <a href="#" onclick="resetPassword()">忘記密碼？</a>
+      </p>
+      <p style="text-align: center; margin-top: 5px">
+        <a href="index.html">回首頁</a>
+      </p>
+    </div>
+
+    <script>
+      const SUPABASE_URL = "https://sbzzfjlmhvuchzwqllgf.supabase.co";
+      const SUPABASE_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNienpmamxtaHZ1Y2h6d3FsbGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI3NDE2OTQsImV4cCI6MjA2ODMxNzY5NH0.fvDVLvGLQdMRuCMXmja8ltpXC3TcjZxq78xbnt9Bh-U";
+
+      const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      async function login() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const messageDiv = document.getElementById("message");
+
+        const { data, error } = await client.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) {
+          messageDiv.textContent = "登入失敗：" + error.message;
+        } else {
+          messageDiv.style.color = "green";
+          messageDiv.textContent = "登入成功，轉跳中...";
+          // 可導向到主畫面或資料頁
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1000);
+        }
+      }
+      async function resetPassword() {
+        const email = prompt("請輸入註冊時的 Email，我們將寄送重設連結：");
+        if (!email) return;
+
+        const { error } = await client.auth.resetPasswordForEmail(email, {
+          redirectTo:
+            "https://weiyutung.github.io/StockWebPage/ResetPassword.html",
+        });
+        console.log("signup data", data);
+        console.log("signup error", error);
+        /*
+        const { data, error } = await client.auth.resetPasswordForEmail(email);
+        */
+        if (error) {
+          alert("重設失敗：" + error.message);
+        } else {
+          alert("已寄出重設密碼信件，請查收 Email。");
+        }
+      }
+    </script>
+  </body>
+</html>

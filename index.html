@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>股票觀測平台</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+
+    <script>
+      const client = supabase.createClient(
+        "https://sbzzfjlmhvuchzwqllgf.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNienpmamxtaHZ1Y2h6d3FsbGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI3NDE2OTQsImV4cCI6MjA2ODMxNzY5NH0.fvDVLvGLQdMRuCMXmja8ltpXC3TcjZxq78xbnt9Bh-U"
+      );
+    </script>
+    
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh-tw.js"></script>
+
+
+    <link href="/static/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- <div id="hbdOverlay" class="hbd-overlay">
+      <div class="hbd-popup">
+        <button
+          type="button"
+          class="hbd-close-btn"
+          aria-label="關閉"
+          onclick="hideHbdPopup()"
+        >
+          ✕
+        </button>
+
+        <div class="hbd-title">\魏羽彤/</div>
+        <div class="hbd-subtitle">22歲生日快樂🎂Happy Birthday</div>
+        <div class="hbd-text">
+          希望你雙12順利搶到便宜的Ace Pro 2帶去韓國拍
+        </div>
+
+        
+      </div>
+    </div> -->
+
+    <!-- 上面的三槓登入選單保留 -->
+    <div class="menu-container" id="menuContainer">
+      <!-- <div class="menu-icon">
+        ☰
+        <div class="dropdown round-card" id="dropdownMenu">
+          <div id="user-email" style="padding: 8px 15px; font-weight: bold"></div>
+          <a href="login.html" id="login-btn">登入</a>
+          <a href="register.html" id="register-btn">註冊</a>
+          <a href="#" id="logout-btn" onclick="logout()" style="display: none">登出</a>
+        </div>
+      </div> -->
+    </div>
+    <div id="main-content">
+  
+      <!--  新的頂部工具列 -->
+      <div class="top-bar">
+        <!-- 左邊區塊：搜尋 + 股票名稱 + OHLC -->
+        <div class="top-left">
+          <!-- 1. 搜尋圖示 -->
+          <button id="searchToggle" class="icon-btn" aria-label="搜尋" title="Tap to search for other stocks">
+            <svg viewBox="0 0 24 24" class="icon-search">
+              <circle
+                cx="11"
+                cy="11"
+                r="6"
+                stroke="currentColor"
+                stroke-width="2"
+                fill="none"
+              />
+              <line
+                x1="16"
+                y1="16"
+                x2="21"
+                y2="21"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+          </button>
+
+
+          <!-- 2. 搜尋框（預設收起，用 .hidden） -->
+          <div id="searchContainer" class="search-container hidden">
+            <div class="search-pill">
+              <span class="search-pill-icon">
+                <!-- 這個 SVG 可以直接複製你 searchToggle 裡的那顆放大鏡 -->
+                <svg viewBox="0 0 24 24">
+                  <circle
+                    cx="11"
+                    cy="11"
+                    r="6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="none"
+                  />
+                  <line
+                    x1="16"
+                    y1="16"
+                    x2="21"
+                    y2="21"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                </svg>
+              </span>
+
+              <input
+                autocomplete="off"
+                id="symbolInput"
+                type="text"
+                placeholder="輸入股票名稱或代號"
+              />
+            </div>
+
+            <!-- 下拉建議一樣放這裡就好 -->
+            <div id="suggestions"  class="round-card"></div>
+          </div>
+
+
+          <!-- 3. 股價名稱 -->
+          <div id="chartTitle" class="stock-name"></div>
+
+          <!-- 4. 開 / 高 / 低 / 收 -->
+          <div id="ohlcInfo" class="ohlc-info">
+            將滑鼠懸停在圖表上以查看詳細資訊
+          </div>
+        </div>
+
+        <!-- 右邊區塊：時間列 + 日曆 + 顯示區隔 + 控制面板 -->
+        <div class="top-right">
+          <!-- 5. 時間區間按鈕 -->
+          <div class="time-range-bar">
+            <div class="time-range-item" onclick="setActive(this, '5d')">5天</div>
+            <div class="time-range-item" onclick="setActive(this, '1m')">1月</div>
+            <div class="time-range-item" onclick="setActive(this, '3m')">3月</div>
+            <div class="time-range-item" onclick="setActive(this, '6m')">6月</div>
+            <div class="time-range-item" onclick="setActive(this, 'ytd')">YTD</div>
+            <div class="time-range-item" onclick="setActive(this, '1y')">1年</div>
+            <div class="time-range-item" onclick="setActive(this, '3y')">3年</div>
+
+            <!-- 日曆按鈕 -->
+            <div class="calendar-btn" onclick="toggleCustomDate()">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M19 4h-1V2h-2v2H8V2H6v2H5C3.9 4 3 4.9 3 6v14c0 
+                  1.1.9 2 2 2h14c1.1 0 2-.9 
+                  2-2V6c0-1.1-.9-2-2-2zm0 
+                  16H5V9h14v11z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <!-- 自訂時間區塊（維持原本，預設隱藏） -->
+          <div id="customDateRange" class="round-card custom-date-card">
+            <div class="custom-date-header">自訂時間區間</div>
+
+            <div class="custom-date-row">
+              <input
+                id="customStart"
+                class="date-input"
+                type="text"
+                placeholder="開始日期"
+                readonly
+              />
+              <span class="date-separator">~</span>
+              <input
+                id="customEnd"
+                class="date-input"
+                type="text"
+                placeholder="結束日期"
+                readonly
+              />
+            </div>
+
+            <div class="custom-date-footer">
+              <button
+                class="date-submit"
+                onclick="loadStockWithRange(getSymbol(), 'custom')"
+              >
+                查詢
+              </button>
+            </div>
+          </div>
+          <!-- 7. 控制面板按鈕 -->
+          <button id="controlPanelToggle" class="btn-secondary">
+            分析面板
+          </button>
+        </div>
+      </div>
+
+      
+
+      <!--  左邊圖 + 右邊控制面板 -->
+      <div id="chartRow" class="chart-row" >
+        <!-- 左邊：K 線 + 成交量 -->
+        <div id="chartArea" class="chart-area">
+          <div id="chartsWrap">
+            <div id="priceChart"></div>
+            <div id="volumeChart"></div>
+          </div>
+        </div>
+
+        <!-- 右邊：控制面板（技術指標 + 進階選項） -->
+        <div id="controlPanel" class="control-panel-right round-card">
+          <!-- 第一項：時間區隔 -->
+          <div class="control-section">
+            <h3>時間區隔</h3>
+            <button
+              id="togglePeriodsBtn"
+              class="btn-secondary"
+              onclick="togglePeriods()"
+            >
+              顯示區隔
+            </button>
+          </div>
+
+          <div class="control-section">
+            <h3>預測</h3>
+            <!-- <button
+              id="future30Btn3"
+              class="btn-secondary"
+              type="button"
+            >
+              與歷史股票比較趨勢
+            </button> -->
+            <button
+              id="future30Btn"
+              class="btn-secondary"
+              type="button"
+            >
+              未來30天趨勢
+            </button>
+            <button
+              id="future30Btn2"
+              class="btn-secondary"
+              type="button"
+            >
+              買賣點
+            </button>
+            <div id="predictionText" style="font-size: 10px; color: #333; padding: 10px;"></div> 
+          </div>
+          <!-- 上：技術指標 -->
+          <div class="control-section">
+            
+            <h3>顯示技術線</h3>
+              <div class="control-section" style="margin-bottom: 10px;">
+                <button class="btn-secondary" style="width: 100%; color: #c0392b; border-color: #e74c3c;" onclick="resetAllSelections()">
+                  清除所有選項
+                </button>
+              </div>
+            <div class="checkbox-group">
+              <!-- 這裡把你原本右側的 indicator-check 全部搬過來 -->
+              <label
+                ><input class="indicator-check" type="checkbox" value="Sma_5" />
+                SMA 5</label
+              >
+              <label
+                ><input class="indicator-check" type="checkbox" value="Sma_10" />
+                SMA 10</label
+              >
+              <label
+                ><input class="indicator-check" type="checkbox" value="Sma_20" />
+                SMA 20</label
+              >
+              <label
+                ><input class="indicator-check" type="checkbox" value="Sma_60" />
+                SMA 60</label
+              >
+              <label
+                ><input
+                  class="indicator-check"
+                  type="checkbox"
+                  value="Sma_120"
+                />
+                SMA 120</label
+              >
+              <label
+                ><input
+                  class="indicator-check"
+                  type="checkbox"
+                  value="Sma_240"
+                />
+                SMA 240</label
+              >
+              <label
+                ><input class="indicator-check" type="checkbox" value="DIF" />
+                MACD DIF (快線)</label
+              >
+              <label
+                ><input class="indicator-check" type="checkbox" value="DEA" />
+                MACD DEA (慢線)</label
+              >
+              <label
+                ><input class="indicator-check" type="checkbox" value="K" />
+                K</label
+              >
+              <label
+                ><input class="indicator-check" type="checkbox" value="D" />
+                D</label
+              >
+              <label
+                ><input class="indicator-check" type="checkbox" value="J" />
+                J</label
+              >
+              <label
+                ><input class="indicator-check" type="checkbox" value="Bias" />
+                Bias</label
+              >
+            </div>
+          </div>
+
+
+          <!-- 下：進階選項（拖曳式條件判斷） -->
+          <div class="control-section">
+            <h3>進階條件</h3>
+
+            <div class="rule-builder">
+              <!-- 左邊：可拖曳的技術指標 chips -->
+              <div class="rule-palette">
+                <div class="palette-title">把指標拖曳到下方條件句</div>
+                <div class="palette-chips">
+                  <!-- 這裡的 data-field 要對應後端欄位名稱 -->
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="Sma_5"
+                  >
+                    SMA 5
+                  </div>
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="Sma_10"
+                  >
+                    SMA 10
+                  </div>
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="Sma_20"
+                  >
+                    SMA 20
+                  </div>
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="Sma_60"
+                  >
+                    SMA 60
+                  </div>
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="Sma_120"
+                  >
+                    SMA 120
+                  </div>
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="Sma_240"
+                  >
+                    SMA 240
+                  </div>
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="DIF"
+                  >
+                    DIF
+                  </div>
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="DEA"
+                  >
+                    DEA
+                  </div>
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="K"
+                  >
+                    K
+                  </div>
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="D"
+                  >
+                    D
+                  </div>
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="J"
+                  >
+                    J
+                  </div>
+                  <div
+                    class="rule-chip"
+                    draggable="true"
+                    data-type="indicator"
+                    data-field="Bias"
+                  >
+                    Bias
+                  </div>
+                </div>
+              </div>
+
+              <!-- 右邊：條件句列表 -->
+              <div class="rule-sentences">
+                <!-- 標題 + 新增按鈕 + AND/OR pill 同一行 -->
+                <div class="rule-header-row">
+                  <div class="rule-sentences-header">
+                    <span>條件句</span>
+                  </div>
+
+                  <!-- 新增按鈕 + AND/OR pill -->
+                  <div class="rule-toolbar">
+                    <button
+                      type="button"
+                      class="btn-secondary2"
+                      id="addConditionRowBtn"
+                    >
+                      + 新增條件
+                    </button>
+
+                    <!-- AND / OR 選擇，外觀是 pill，實際值存在 hidden input -->
+                    <div class="logic-toggle" id="globalLogicToggle">
+                      <button
+                        type="button"
+                        class="logic-option active"
+                        data-value="AND"
+                      >
+                        AND
+                      </button>
+                      <button
+                        type="button"
+                        class="logic-option"
+                        data-value="OR"
+                      >
+                        OR
+                      </button>
+                    </div>
+
+                    <!-- 給 JS 用的隱藏欄位 -->
+                    <input type="hidden" id="globalLogic" value="AND" />
+                  </div>
+                </div>
+
+                <!-- 條件句橫向捲動區 -->
+                <div class="rule-list-scroll">
+                  <div id="conditionRowsContainer"></div>
+                </div>
+
+                <!-- 沒有任何條件成立時的通知文字 -->
+                <div id="conditionNoHitMsg" class="condition-nohit-msg" style="display: none;"></div>
+                
+                <!-- 底下：清除 / 套用 -->
+                <div class="rule-actions-row">
+                  <button
+                    type="button"
+                    class="btn-secondary"
+                    id="clearConditionsBtn"
+                  >
+                    清除條件
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-secondary"
+                    id="applyConditionsBtn"
+                  >
+                    套用條件
+                  </button>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+        </div>
+
+      <!--  圖表：K 線 + 成交量，滿版寬度上下疊 -->
+      <div id="chartsWrap">
+        <div id="priceChart"></div>
+        <div id="volumeChart"></div>
+      </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

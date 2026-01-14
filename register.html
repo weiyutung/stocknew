@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <title>註冊</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f8f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .register-container {
+        background-color: white;
+        padding: 30px 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-sizing: border-box;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background-color: #218838;
+      }
+
+      .message {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="register-container">
+      <h2>註冊帳號</h2>
+      <input type="email" id="email" placeholder="Email" required />
+      <input
+        type="password"
+        id="password"
+        placeholder="密碼（至少6位）"
+        required
+      />
+      <button onclick="register()">註冊</button>
+      <p style="text-align: center; margin-top: 15px">
+        <a href="index.html">回首頁</a>
+      </p>
+      <div class="message" id="message"></div>
+    </div>
+
+    <script>
+      const SUPABASE_URL = "https://sbzzfjlmhvuchzwqllgf.supabase.co";
+      const SUPABASE_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNienpmamxtaHZ1Y2h6d3FsbGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI3NDE2OTQsImV4cCI6MjA2ODMxNzY5NH0.fvDVLvGLQdMRuCMXmja8ltpXC3TcjZxq78xbnt9Bh-U";
+
+      const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      async function register() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const msg = document.getElementById("message");
+
+        if (password.length < 6) {
+          msg.textContent = "密碼至少需要 6 位字元";
+          return;
+        }
+
+        console.log("signUp options:", {
+          email,
+          password,
+          options: {
+            redirectTo: "https://weiyutung.github.io/StockWebPage/",
+          },
+        });
+        const { data, error } = await client.auth.signUp({
+          email,
+          password,
+          options: {
+            redirectTo: "https://weiyutung.github.io/StockWebPage/index.html", //  正確首頁路徑
+          },
+        });
+        console.log("signup data", data);
+        console.log("signup error", error);
+
+        if (error) {
+          msg.textContent = "註冊失敗：" + error.message;
+        } else {
+          msg.style.color = "green";
+          msg.textContent = "註冊成功！請到信箱收信驗證";
+        }
+      }
+    </script>
+  </body>
+</html>

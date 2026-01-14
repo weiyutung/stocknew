@@ -1,0 +1,17 @@
+# 數值與資料分析
+numpy>=1.26.4
+pandas==2.2.3
+
+# 股票資料抓取
+yfinance==0.2.66
+
+# 技術指標分析
+pandas-ta-openbb==0.4.22
+
+supabase
+mysql-connector-python
+
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-dotenv==1.0.1
+mysql-connector-python==9.0.0
