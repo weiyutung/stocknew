@@ -7,7 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-
     <script>
       const client = supabase.createClient(
         "https://sbzzfjlmhvuchzwqllgf.supabase.co",
@@ -26,30 +25,11 @@
     <link href="/static/style.css" rel="stylesheet" />
   </head>
   <body>
-    <!-- <div id="hbdOverlay" class="hbd-overlay">
-      <div class="hbd-popup">
-        <button
-          type="button"
-          class="hbd-close-btn"
-          aria-label="關閉"
-          onclick="hideHbdPopup()"
-        >
-          ✕
-        </button>
-
-        <div class="hbd-title">\魏羽彤/</div>
-        <div class="hbd-subtitle">22歲生日快樂🎂Happy Birthday</div>
-        <div class="hbd-text">
-          希望你雙12順利搶到便宜的Ace Pro 2帶去韓國拍
-        </div>
-
-        
-      </div>
-    </div> -->
-
-    <!-- 上面的三槓登入選單保留 -->
+    <!-- 三槓選單 (登入註冊有錯誤) -->
+    <!-- 一開始是用 supabase 還沒改掉 -->
+    <!-- 也會連到 github 所以整個要改掉 -->
     <div class="menu-container" id="menuContainer">
-      <!-- <div class="menu-icon">
+      <div class="menu-icon">
         ☰
         <div class="dropdown round-card" id="dropdownMenu">
           <div id="user-email" style="padding: 8px 15px; font-weight: bold"></div>
@@ -57,15 +37,14 @@
           <a href="register.html" id="register-btn">註冊</a>
           <a href="#" id="logout-btn" onclick="logout()" style="display: none">登出</a>
         </div>
-      </div> -->
+      </div>
     </div>
     <div id="main-content">
-  
       <!--  新的頂部工具列 -->
       <div class="top-bar">
         <!-- 左邊區塊：搜尋 + 股票名稱 + OHLC -->
         <div class="top-left">
-          <!-- 1. 搜尋圖示 -->
+          <!-- 搜尋圖示 -->
           <button id="searchToggle" class="icon-btn" aria-label="搜尋" title="Tap to search for other stocks">
             <svg viewBox="0 0 24 24" class="icon-search">
               <circle
@@ -88,11 +67,11 @@
           </button>
 
 
-          <!-- 2. 搜尋框（預設收起，用 .hidden） -->
+          <!-- 搜尋框（預設收起） -->
           <div id="searchContainer" class="search-container hidden">
             <div class="search-pill">
               <span class="search-pill-icon">
-                <!-- 這個 SVG 可以直接複製你 searchToggle 裡的那顆放大鏡 -->
+                <!-- SVG:放大鏡 -->
                 <svg viewBox="0 0 24 24">
                   <circle
                     cx="11"
@@ -121,15 +100,15 @@
               />
             </div>
 
-            <!-- 下拉建議一樣放這裡就好 -->
+            <!-- 下拉建議 -->
             <div id="suggestions"  class="round-card"></div>
           </div>
 
 
-          <!-- 3. 股價名稱 -->
+          <!-- 股價名稱 -->
           <div id="chartTitle" class="stock-name"></div>
 
-          <!-- 4. 開 / 高 / 低 / 收 -->
+          <!-- 開 / 高 / 低 / 收 -->
           <div id="ohlcInfo" class="ohlc-info">
             將滑鼠懸停在圖表上以查看詳細資訊
           </div>
@@ -137,7 +116,7 @@
 
         <!-- 右邊區塊：時間列 + 日曆 + 顯示區隔 + 控制面板 -->
         <div class="top-right">
-          <!-- 5. 時間區間按鈕 -->
+          <!-- 時間區間按鈕 -->
           <div class="time-range-bar">
             <div class="time-range-item" onclick="setActive(this, '5d')">5天</div>
             <div class="time-range-item" onclick="setActive(this, '1m')">1月</div>
@@ -159,7 +138,7 @@
               </svg>
             </div>
           </div>
-          <!-- 自訂時間區塊（維持原本，預設隱藏） -->
+          <!-- 自訂時間區塊（預設隱藏） -->
           <div id="customDateRange" class="round-card custom-date-card">
             <div class="custom-date-header">自訂時間區間</div>
 
@@ -190,7 +169,7 @@
               </button>
             </div>
           </div>
-          <!-- 7. 控制面板按鈕 -->
+          <!-- 控制面板按鈕 -->
           <button id="controlPanelToggle" class="btn-secondary">
             分析面板
           </button>
@@ -211,7 +190,7 @@
 
         <!-- 右邊：控制面板（技術指標 + 進階選項） -->
         <div id="controlPanel" class="control-panel-right round-card">
-          <!-- 第一項：時間區隔 -->
+          <!-- 時間區隔 -->
           <div class="control-section">
             <h3>時間區隔</h3>
             <button
@@ -225,6 +204,7 @@
 
           <div class="control-section">
             <h3>預測</h3>
+            <!-- 與歷史股票比較趨勢 (尚未做好) -->
             <!-- <button
               id="future30Btn3"
               class="btn-secondary"
@@ -258,7 +238,6 @@
                 </button>
               </div>
             <div class="checkbox-group">
-              <!-- 這裡把你原本右側的 indicator-check 全部搬過來 -->
               <label
                 ><input class="indicator-check" type="checkbox" value="Sma_5" />
                 SMA 5</label
@@ -324,11 +303,10 @@
             <h3>進階條件</h3>
 
             <div class="rule-builder">
-              <!-- 左邊：可拖曳的技術指標 chips -->
+              <!-- 可拖曳的技術指標 -->
               <div class="rule-palette">
                 <div class="palette-title">把指標拖曳到下方條件句</div>
                 <div class="palette-chips">
-                  <!-- 這裡的 data-field 要對應後端欄位名稱 -->
                   <div
                     class="rule-chip"
                     draggable="true"
@@ -428,15 +406,13 @@
                 </div>
               </div>
 
-              <!-- 右邊：條件句列表 -->
+              <!-- 條件句列表 -->
               <div class="rule-sentences">
-                <!-- 標題 + 新增按鈕 + AND/OR pill 同一行 -->
+                <!-- 標題 + 新增按鈕 + AND/OR 同一行 -->
                 <div class="rule-header-row">
                   <div class="rule-sentences-header">
                     <span>條件句</span>
                   </div>
-
-                  <!-- 新增按鈕 + AND/OR pill -->
                   <div class="rule-toolbar">
                     <button
                       type="button"
@@ -445,8 +421,6 @@
                     >
                       + 新增條件
                     </button>
-
-                    <!-- AND / OR 選擇，外觀是 pill，實際值存在 hidden input -->
                     <div class="logic-toggle" id="globalLogicToggle">
                       <button
                         type="button"
@@ -463,7 +437,6 @@
                         OR
                       </button>
                     </div>
-
                     <!-- 給 JS 用的隱藏欄位 -->
                     <input type="hidden" id="globalLogic" value="AND" />
                   </div>

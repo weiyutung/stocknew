@@ -3,7 +3,7 @@ import mysql.connector
 from datetime import datetime, timedelta
 
 # ===============================
-# 參數設定（你只需改這裡）
+# 在嘗試加入未來30天預測
 # ===============================
 CSV_PATH = "AAPL_test_preds.csv"
 SYMBOL = "AAPL"
@@ -53,15 +53,16 @@ def main():
     with open(CSV_PATH, encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
 
-        # ⭐ 修復欄位名稱汙染（例如 '\ufeffdate' → 'date'）
-        reader.fieldnames = [fn.lstrip("\ufeff").strip() for fn in reader.fieldnames]
+        # 修復欄位名稱汙染（例如 '\ufeffdate' → 'date'）
+        reader.fieldnames = [fn.lstrip("\ufeff").strip()
+                             for fn in reader.fieldnames]
 
         rows = list(reader)
 
     if not rows:
         raise ValueError("CSV 是空的")
 
-    # ⭐ 找到你指定的那一列
+    # 找到指定的那一列
     target_row = None
     for row in rows:
         if row.get("date") == TARGET_DATE:
@@ -69,7 +70,8 @@ def main():
             break
 
     if not target_row:
-        raise KeyError(f"CSV 找不到 date = {TARGET_DATE}，欄位有：{list(rows[0].keys())}")
+        raise KeyError(
+            f"CSV 找不到 date = {TARGET_DATE}，欄位有：{list(rows[0].keys())}")
 
     conn = mysql.connector.connect(**MYSQL_CONFIG)
     create_table_if_not_exists(conn)
@@ -90,7 +92,7 @@ def main():
     if len(pred_labels) != 30:
         raise ValueError(f"pred_labels 不是 30 筆：{pred_labels}")
 
-    # ⭐ 只寫入這一列的 30 筆
+    # 只寫入這一列的 30 筆
     for i, label in enumerate(pred_labels, start=1):
         pred_day = base_date + timedelta(days=i)
 
@@ -109,7 +111,7 @@ def main():
     cur.close()
     conn.close()
 
-    print(f"✅ 已匯入 {TARGET_DATE} 的 30 筆預測！")
+    print(f"已匯入 {TARGET_DATE} 的 30 筆預測！")
 
 
 if __name__ == "__main__":

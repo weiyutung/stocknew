@@ -10,7 +10,7 @@ h3 {
 }
 
 .menu-container {
-  position: fixed; /* 🔹改成固定在畫面上，不跟著版面擠 */
+  position: fixed; /* 固定在畫面上 */
   top: 10px;
   left: 20px;
   font-size: 24px;
@@ -25,15 +25,15 @@ h3 {
 
 .dropdown {
   display: none;
-  position: absolute; /* 仍然相對於 .menu-icon */
-  left: 0; /* 如果你要從 ☰ 的左邊對齊往下展開 */
-  top: 32px; /* 往下 32px，避免貼太緊 */
+  position: absolute;
+  left: 0;
+  top: 32px;
   background-color: #fff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
   border-radius: 4px;
   min-width: 505x;
-  z-index: 3001; /* 🔹確定比搜尋膠囊還高 */
+  z-index: 3001;
 }
 
 .dropdown a {
@@ -59,7 +59,6 @@ body {
 #main-content {
   width: 100%;
   max-width: 1350px;
-  /* 可以改 1300 / 1500 看你喜歡 */
   margin: 0 auto;
   padding: 16px;
   box-sizing: border-box;
@@ -120,18 +119,16 @@ button {
   padding: 8px 12px;
 
   background-color: #ffffff;
-  flex-wrap: nowrap; /* 🔹不要自動換行，避免按鈕掉到下一排 */
+  flex-wrap: nowrap;
 }
 
 /* 搜尋圖示按鈕 */
-/* 搜尋收起時那顆小圓按鈕 */
-/* 左上角搜尋按鈕（收起狀態） */
 .icon-btn {
-  width: 45px; /* 🔹跟膠囊高度一致 */
+  width: 45px;
   height: 36px;
   border-radius: 999px;
   border: none;
-  background: transparent; /* 🔹完全透明，沒有底色 */
+  background: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -139,7 +136,6 @@ button {
   padding: 0;
 }
 
-/* 不改背景，改 icon 顏色當 hover 效果 */
 .icon-btn:hover .icon-search {
   stroke: #000;
 }
@@ -154,7 +150,6 @@ button {
 }
 
 /* 5. 搜尋框改成放在工具列用 */
-/* 搜尋整體容器（被 searchToggle 開關） */
 .search-container {
   position: relative;
   margin: 0 0 0 8px;
@@ -171,8 +166,8 @@ button {
   background: #f2f2f2;
   color: #333;
   border-radius: 999px;
-  padding: 0 14px; /* 上下改成 0，由 height 控制高度 */
-  height: 36px; /* 🔹統一高度 */
+  padding: 0 14px;
+  height: 36px; /* 統一高度 */
   min-width: 260px;
   max-width: 360px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
@@ -184,7 +179,7 @@ button {
   align-items: center;
   justify-content: center;
   margin-right: 8px;
-  cursor: pointer; /* ★ 變成可點的樣式 */
+  cursor: pointer;
 }
 
 .search-pill-icon svg {
@@ -210,7 +205,7 @@ button {
   color: #999;
 }
 
-/* 下拉建議：跟膠囊同寬，貼在下面 */
+/* 下拉建議：跟膠囊同寬 */
 #suggestions {
   display: none;
   position: absolute;
@@ -251,7 +246,6 @@ button {
   min-width: 80px;
 }
 
-/* 以下為ohlc */
 /* 開高低收資訊 */
 .ohlc-info {
   flex: 0 1 auto;
@@ -270,7 +264,6 @@ button {
   text-overflow: ellipsis;
 }
 
-/* 每一個「開 231.48」的小組 */
 .ohlc-item {
   display: inline-flex;
   align-items: baseline;
@@ -289,7 +282,7 @@ button {
   font-variant-numeric: tabular-nums;
 }
 
-/* 上漲（你是紅漲綠跌，所以 up = 紅） */
+/* 上漲 */
 .ohlc-value.up {
   color: #e74c3c;
 }
@@ -298,11 +291,10 @@ button {
 .ohlc-value.down {
   color: #2ecc71;
 }
-/* 以上為ohlc */
 
 /* 右邊：時間列 + 日曆 + 顯示區隔 + 控制面板 */
 .top-right {
-  margin-left: auto; /* 🔹整組靠右 */
+  margin-left: auto; /* 整組靠右 */
   display: flex;
   align-items: center;
   gap: 8px;
@@ -310,26 +302,24 @@ button {
 }
 
 /* 時間列容器 */
-/* 整個時間區間條：像一條小膠囊條 */
-/* 整個時間區間條：外層膠囊 */
 .time-range-bar {
   display: inline-flex;
   align-items: center;
   padding: 4px 6px;
   border-radius: 999px;
-  background-color: #ffffff; /* 🔹外層改白底 */
-  border: 1px solid #e0e0e0; /* 輕微的外框 */
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
   gap: 2px;
   font-size: 13px;
 }
 
-/* 單個時間選項：預設看起來「沒有框」，只是一段字 */
+/* 單個時間選項*/
 .time-range-item {
   cursor: pointer;
   padding: 3px 10px;
   border-radius: 999px;
-  border: 1px solid #ffffff; /* 🔹邊框顏色 = 白色，跟底色融在一起 */
-  background-color: #ffffff; /* 跟 time-range-bar 一樣白 */
+  border: 1px solid #ffffff;
+  background-color: #ffffff;
   color: #555;
   transition: background 0.15s ease, color 0.15s ease;
 }
@@ -341,8 +331,8 @@ button {
 
 /* 選中的：不填色，只用藍色字體表示 */
 .time-range-item.active {
-  background-color: #ffffff; /* 保持白底 */
-  color: #5956f7; /* 🔹藍字 */
+  background-color: #ffffff;
+  color: #5956f7;
   font-weight: 600;
 }
 
@@ -371,14 +361,13 @@ button {
 }
 
 /* 共用次要按鈕：顯示區隔 / 控制面板 */
-/* 顯示區隔 / 控制面板 等小按鈕 → pill，跟時間列等高 */
 .btn-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  height: 32px; /* 🔹跟時間膠囊視覺差不多高 */
-  padding: 0 12px; /* 上下靠 height 控制，左右用 padding */
+  height: 32px;
+  padding: 0 12px;
   font-size: 13px;
 
   border-radius: 999px;
@@ -401,10 +390,9 @@ button {
   align-items: center;
   justify-content: center;
 
-  height: 28px; /* 🔹跟時間膠囊視覺差不多高 */
-  padding: 0 12px; /* 上下靠 height 控制，左右用 padding */
+  height: 28px;
+  padding: 0 12px;
   font-size: 13px;
-
   border-radius: 999px;
   border: 1px solid #ddd;
   background-color: #ffffff;
@@ -441,7 +429,6 @@ button {
   font-size: 14px;
 }
 
-/* 3. 圖表 + 控制面板：水平排列 */
 /* 左：圖表，右：控制面板（側欄） */
 .chart-row {
   display: flex;
@@ -458,26 +445,18 @@ button {
 .control-panel-right {
   width: 260px;
   height: 520px;
-  /* 側欄寬度可以自己調 */
   flex-shrink: 0;
-  margin-left: 16px;
-  /* 和圖之間留一點空隙 */
-
+  margin-left: 16px; /* 和圖之間留一點空隙 */
   padding: 10px 12px;
   box-sizing: border-box;
-
   background: #ffffff;
-  /* ★ 白色背景 */
   border-radius: 8px;
   border: 1px solid #ddd;
-
-  display: none;
-  /* 預設關閉 */
-  overflow-y: auto;
-  /* 超出高度可以捲動 */
+  display: none; /* 預設關閉 */
+  overflow-y: auto; /* 超出高度可以捲動 */
 }
 
-/* 展開時：用 flex 撐滿整高，排成上下兩區（技術指標 + 進階選項） */
+/* 展開時：用 flex 撐滿整高，排成上下兩區（ */
 .control-panel-right.open {
   display: flex;
   flex-direction: column;
@@ -487,13 +466,10 @@ button {
 /* 整條 scrollbar 的寬度 */
 .control-panel-right::-webkit-scrollbar {
   width: 16px;
-  /* 整條軌道寬度 */
 }
 
-/* 軌道（背景） */
 .control-panel-right::-webkit-scrollbar-track {
   background: transparent;
-  /* 可以改成 #f5f5f5 看你喜歡 */
 }
 
 /* 中間的滑塊：做成圓角膠囊 */
@@ -501,7 +477,6 @@ button {
   background: #d0d0d0;
   border-radius: 999px;
   border: 4px solid transparent;
-  /* 讓膠囊不要貼滿整個軌道 */
   background-clip: padding-box;
 }
 
@@ -570,7 +545,6 @@ button {
 }
 
 /* 以上為控制面板的滾輪 */
-
 .control-section {
   margin-bottom: 12px;
 }
@@ -593,7 +567,7 @@ button {
   flex-direction: column;
   gap: 4px;
   height: 300px;
-  /* ★ 整體高度：想更矮就改小，比如 360px */
+  /* 整體高度：想更矮就改小，比如 360px */
 }
 
 #priceChart {
@@ -614,7 +588,6 @@ button {
   box-shadow: none !important;
   padding: 0 !important;
   opacity: 1 !important;
-  /* 讓它仍掛著，互動才會正常 */
   pointer-events: none !important;
 }
 
@@ -622,21 +595,18 @@ button {
 #volumeChart .apexcharts-tooltip-series-group,
 #volumeChart .apexcharts-tooltip-marker {
   display: none !important;
-  /* 沒內容、沒框框 */
 }
 
-/* 以下為自訂時間容器（初始隱藏） */
-/* 懸浮式日期選擇卡片（顯示時由 JS 控制 display / 位置） */
 /* === 自訂日期卡片 === */
 #customDateRange {
-  display: none; /* JS 會切換成 flex */
-  position: fixed; /* 由 toggleCustomDate 定位 */
+  display: none;
+  position: fixed;
   flex-direction: column;
   gap: 12px;
   padding: 12px 16px;
   box-sizing: border-box;
 
-  min-width: 260px; /* 調寬一點避免內容超出 */
+  min-width: 260px;
   max-width: 320px;
 }
 
@@ -657,10 +627,10 @@ button {
 
 /* 兩個輸入框 */
 .date-input {
-  flex: 0 0 auto; /* 不要再撐滿整行 */
-  width: 105px; /* 膠囊長度，想要再短就改小一點 */
+  flex: 0 0 auto;
+  width: 105px;
   min-width: 0;
-  padding: 6px 10px; /* 稍微矮一點，看起來更精緻 */
+  padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid #d0d5dd;
   font-size: 13px;
@@ -703,7 +673,7 @@ button {
   color: #ffffff;
 }
 
-/* === 通用的圓角風格 === */
+/* 通用的圓角風格  */
 :root {
   --radius-pill: 999px;
   --radius-card: 12px;
@@ -755,13 +725,13 @@ button {
   box-shadow: var(--shadow-soft);
 }
 
-/* 🔹整個 flatpickr 日曆等比例縮小 */
+/* 整個 flatpickr 日曆等比例縮小 */
 .flatpickr-calendar {
-  transform: scale(0.85); /* 想再小可以 0.8 / 0.75 */
-  transform-origin: top left; /* 以左上角為基準縮放 */
+  transform: scale(0.85);
+  transform-origin: top left;
 }
 
-/* 🔹關掉 flatpickr 預設開啟動畫，避免「先大再小」的感覺 */
+/* 關掉 flatpickr 預設開啟動畫，避免「先大再小」的感覺 */
 .flatpickr-calendar.animate,
 .flatpickr-calendar.animate.open {
   animation: none !important;
@@ -769,7 +739,6 @@ button {
 }
 
 /* === 進階條件 Builder === */
-
 .rule-builder {
   display: flex;
   flex-direction: column;
@@ -821,7 +790,7 @@ button {
 
 #conditionRowsContainer {
   width: 100%;
-  max-width: 1200px; /* 自訂最大寬度，根據需要調整 */
+  max-width: 1200px;
   margin: 0 auto;
   overflow-x: auto;
   scrollbar-width: thin;
@@ -829,7 +798,7 @@ button {
 
 /* Chrome / Edge / Safari 用 */
 #conditionRowsContainer::-webkit-scrollbar {
-  height: 6px; /* 捲動條高度變細 */
+  height: 6px;
 }
 
 #conditionRowsContainer::-webkit-scrollbar-track {
@@ -838,7 +807,7 @@ button {
 
 #conditionRowsContainer::-webkit-scrollbar-thumb {
   background: #d0d0d0;
-  border-radius: 999px; /* 圓圓的 */
+  border-radius: 999px;
 }
 
 /* 單一條件句的一行 */
@@ -851,8 +820,8 @@ button {
 
 /* 左右兩個 drop slot */
 .drop-slot {
-  flex: 0 0 65px; /* 原本 80px → 縮短 */
-  padding: 3px 4px; /* 上下也稍微縮一點 */
+  flex: 0 0 65px;
+  padding: 3px 4px;
   border-radius: 999px;
   border: 1px dashed #bbb;
   background: #fafafa;
@@ -861,7 +830,7 @@ button {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 11px; /* 字稍微小一點 */
+  font-size: 11px;
 }
 
 .drop-slot.filled {
@@ -878,10 +847,10 @@ button {
 
 /* 讓 + 新增條件 字體小一點、不要自動換行 */
 #addConditionRowBtn {
-  font-size: 11px; /* 比原本 btn-secondary 的 13px 小一點 */
-  padding: 0 10px; /* 左右稍微縮窄 */
-  white-space: nowrap; /* 不要讓「條件」掉到下一行 */
-  flex-shrink: 0; /* 不要被擠到變更窄 */
+  font-size: 11px;
+  padding: 0 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* 運算子選單 */
@@ -894,7 +863,7 @@ button {
 
 /* 選擇框寬度調整 */
 .op-select {
-  flex: 0 0 70px; /* 原本 80px → 70px */
+  flex: 0 0 70px;
   max-width: 58px;
   padding: 3px 4px;
   font-size: 11px;
@@ -912,7 +881,7 @@ button {
 
 /* 右邊數值輸入框（> < 模式用的） */
 .value-input {
-  flex: 0 0 70px; /* 原本 flex: 0 1 80px + width:100 → 統一縮短 */
+  flex: 0 0 70px;
   max-width: 70px;
   padding: 3px 4px;
   font-size: 11px;
@@ -927,7 +896,7 @@ button {
   padding: 0 4px;
 }
 
-/* 標題「條件句」下面那一排：左邊新增按鈕，右邊 AND/OR pill */
+/* 標題「條件句」，新增按鈕，右邊 AND/OR pill */
 .rule-toolbar {
   display: flex;
   align-items: center;
@@ -967,24 +936,23 @@ button {
   transform: translateX(100%);
 }
 
-/* AND / OR 兩顆按鈕本體 */
-/* AND / OR 文字在內層白色 pill 完全置中 */
+/* AND / OR 兩顆按鈕 */
 .logic-option {
   position: relative;
   z-index: 1;
   flex: 1 1 0;
   border: none;
   background: transparent;
-  padding: 2px 2px; /* 上下小一點，視覺比較中 */
+  padding: 2px 2px;
   border-radius: 999px;
   font-size: 11px;
   color: #666;
   cursor: pointer;
 
-  display: flex; /* 用 flex 置中 */
-  align-items: center; /* 垂直置中 */
-  justify-content: center; /* 水平置中 */
-  line-height: 1; /* 避免文字撐高 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .logic-option.active {
@@ -1002,9 +970,7 @@ button {
   margin-top: 8px;
 }
 
-/* ===== 進階條件：條件句標題 + 新增 + AND/OR 同一排 ===== */
-
-/* 這一排：左邊「條件句」，右邊「+ 新增條件 + AND/OR」 */
+/* 進階條件：條件句標題 + 新增 + AND/OR */
 .rule-header-row {
   display: flex;
   align-items: center;
@@ -1024,21 +990,20 @@ button {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 0; /* 原本有上邊距，這裡把它拿掉，才會跟標題對齊 */
+  margin-top: 0;
 }
 
-/* ===== 底下「清除條件」「套用條件」平均分配 ===== */
-
+/* 底下「清除條件」「套用條件」平均分配 */
 .rule-actions-row {
   display: flex;
-  justify-content: space-between; /* 左右平均分配 */
+  justify-content: space-between;
   gap: 8px;
   margin-top: 10px;
 }
 
 .rule-actions-row .btn-secondary {
-  flex: 1 1 0; /* 兩個按鈕一樣寬 */
-  text-align: center; /* 文字置中 */
+  flex: 1 1 0;
+  text-align: center;
 }
 
 /* 進階條件：沒有任何條件成立的提示文字 */
@@ -1049,15 +1014,15 @@ button {
   color: #888;
 }
 
-/* ===  彈出視窗 === */
+/* 彈出視窗 */
 .hbd-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
-  display: none; /* 🔹預設完全不顯示 */
+  display: none;
   align-items: center;
   justify-content: center;
-  z-index: 5000; /* 蓋過 menu / 圖表 */
+  z-index: 5000;
 }
 
 /* 顯示時改成 flex，置中卡片 */
@@ -1068,12 +1033,12 @@ button {
 .hbd-popup {
   position: relative;
   background: #ffffff;
-  padding: 32px 42px 34px; /* 🔹變得更寬＋上下更厚 */
+  padding: 32px 42px 34px;
   border-radius: 26px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
   text-align: center;
-  min-width: 320px; /* 🔹原本 260 → 320 */
-  max-width: 420px; /* 🔹原本 320 → 420 */
+  min-width: 320px;
+  max-width: 420px;
   animation: hbd-pop 0.7s ease-out;
 }
 
@@ -1133,14 +1098,13 @@ button {
 
 /* GIF 本體：大小＋飄浮動畫 */
 .hbd-gif {
-  width: 120px; /* 🔹可以改成 140 / 160 看喜歡 */
+  width: 120px;
   height: auto;
   pointer-events: none;
   user-select: none;
   animation: hbd-float 2.4s ease-in-out infinite;
 }
 
-/* 小小的上下飄 + 微微放大 */
 @keyframes hbd-float {
   0%,
   100% {
@@ -1152,11 +1116,11 @@ button {
 }
 /* 下一個交易日策略那一行的樣式 */
 #predictionText {
-  margin: 0px 0 0px 0; /* 上 左 下 右 */
+  margin: 0px 0 0px 0;
 }
 
 #predictionText .pred-label {
-  font-size: 14px; /* 左邊「下個交易日策略評估：」 */
+  font-size: 14px;
   color: #000000;
 }
 
