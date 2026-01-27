@@ -127,7 +127,7 @@ let currentMonths = 3; // 目前的時間區隔長度（幾個月）
 let showPeriods = false; // 是否顯示時間區隔線
 let currentRange = "3m"; // 目前使用中的時間範圍 (5d / 1m / 3m / 1y / custom ...)
 
-// === 視窗範圍工具（放這裡） ===
+// === 視窗範圍工具 ===
 function getCurrentXRange() {
   const w = window.priceChartInst?.w;
   if (!w) return null;
@@ -221,11 +221,11 @@ function selectSymbol(symbol) {
   // 關掉建議列表
   if (suggestionsDiv) suggestionsDiv.style.display = "none";
 
-  // 🔹 收起搜尋膠囊，恢復左邊搜尋 icon
+  // 收起搜尋膠囊，恢復左邊搜尋 icon
   if (searchContainer) searchContainer.classList.add("hidden");
   if (searchToggle) searchToggle.style.display = "flex";
 
-  // （如果你 Enter 時有順便關閉自訂日期 / 控制面板，也可以一起放進來）
+  // （如果 Enter 時有順便關閉自訂日期 / 控制面板可以一起放進來）
   const customDiv = document.getElementById("customDateRange");
   if (customDiv) customDiv.style.display = "none";
 
@@ -341,6 +341,7 @@ async function displayStockData(data, symbol) {
   //     "0"
   //   )}-${String(d.getDate()).padStart(2, "0")}`;
   // });
+
   window.tradingDates = data
     .map((row) => normalizeDateKey(row.date))
     .filter(Boolean);
@@ -930,11 +931,11 @@ async function toggleFuture30Days() {
     const futureCandles = buildFutureCandlesFromDir(predictions, baseClose);
     const futureDates = predictions.map((p) => p.date);
 
-    // 🔹 更新全域資料：把未來30天接到主 K 棒 & X 軸日期
+    // 更新全域資料：把未來30天接到主 K 棒 & X 軸日期
     currentCandleData = baseCandleData.concat(futureCandles);
     window.tradingDates = originalTradingDates.concat(futureDates);
 
-    // 🔹 更新上下兩張圖的 X 軸
+    // 更新上下兩張圖的 X 軸
     ApexCharts.exec(
       "pricePane",
       "updateOptions",
@@ -951,12 +952,12 @@ async function toggleFuture30Days() {
     );
     syncXAxes();
 
-    // 🔹 用新的 currentCandleData 重畫一次 series
+    // 用新的 currentCandleData 重畫一次 series
     if (typeof window.updateIndicatorsFromChecked === "function") {
       window.updateIndicatorsFromChecked();
     }
 
-    // 🔹 視窗往右多開 30 根
+    // 視窗往右多開 30 根
     const range = originalZoomRange || getCurrentXRange();
     if (range) {
       const extra = futureDates.length;
@@ -2479,10 +2480,10 @@ document.addEventListener("DOMContentLoaded", () => {
           let left;
 
           if (input.id === "customStart") {
-            // 🔹開始日期：左邊對齊 input
+            // 開始日期：左邊對齊 input
             left = inputRect.left;
           } else {
-            // 🔹結束日期：右邊對齊 input
+            // 結束日期：右邊對齊 input
             left = inputRect.right - calRect.width;
           }
 
